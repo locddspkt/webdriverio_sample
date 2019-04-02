@@ -1,0 +1,41 @@
+{
+  "name": "test_sel_jasamy",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/wdio wdio.conf.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@wdio/cli": "^5.7.5",
+    "@wdio/dot-reporter": "^5.7.2",
+    "@wdio/jasmine-framework": "^5.7.3",
+    "@wdio/local-runner": "^5.7.5",
+    "@wdio/mocha-framework": "^5.7.3",
+    "@wdio/spec-reporter": "^5.7.2",
+    "@wdio/sync": "^5.7.3",
+    "chromedriver": "^2.46.0",
+    "fs": "0.0.1-security",
+    "fs-extra": "^7.0.1",
+    "fs-filesysteminfo": "^1.0.6",
+    "lodash": "^4.17.11",
+    "selenium-server-standalone": "^2.53.1",
+    "selenium-webdriver": "^4.0.0-alpha.1",
+    "ts-node": "^8.0.3",
+    "tsconfig-paths": "^3.8.0",
+    "wdio-chromedriver-service": "^5.0.1",
+    "wdio-selenium-standalone-service": "0.0.12",
+    "webdriverio": "^5.7.5"
+  },
+  "dependencies": {
+    "@types/node": "^11.11.4",
+    "jasmine": "^3.3.1",
+    "mocha": "^6.0.2"
+  },
+  "keywords": [],
+  "directories": {
+    "test": "test"
+  },
+  "description": ""
+}
