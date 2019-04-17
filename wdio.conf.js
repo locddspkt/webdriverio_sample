@@ -193,10 +193,14 @@ exports.config = {
         //1. calculate the folder to download files for each session
         var currentSpec = specs[0];
         currentSpec = _.replace(currentSpec, GLOBALS_CONSTANTS.ROOT_FOLDER, '');
+        while (currentSpec.substr(0, 1) == '/') currentSpec = currentSpec.substr(1);
+        // while (currentSpec.substr(currentSpec.length - 3) == '.js') currentSpec = currentSpec.substr(0, currentSpec.length - 3);
+
         currentSpec = _.split(currentSpec, '/');
-        currentSpec = _.join(currentSpec, '-');
-        currentSpec = _.split(currentSpec, '.');
-        currentSpec = _.join(currentSpec, '-');
+        currentSpec = _.join(currentSpec, '--');
+        // currentSpec = _.split(currentSpec, '.');
+        // currentSpec = _.join(currentSpec, '-');
+
         GLOBALS_CONSTANTS.BASE_DOWNLOAD_FOLDER = GLOBALS_CONSTANTS.ROOT_FOLDER + '/runtime/downloads';
         currentSpec = GLOBALS_CONSTANTS.BASE_DOWNLOAD_FOLDER + '/' + currentSpec;
 
@@ -224,8 +228,30 @@ exports.config = {
         debug = function () {
             browser.debug();
         };
+        esc = function () {
+            browser.keys('Escape');
+            pause(50);
+        };
         pause = function (milliseconds) {
             browser.pause(milliseconds);
+        };
+        oneSecond = function () {
+            browser.pause(1000);
+        };
+        twoSeconds = function () {
+            browser.pause(2000);
+        };
+        threeSeconds = function () {
+            browser.pause(3000);
+        };
+        oneTick = function () {
+            browser.pause(100);
+        };
+        twoTicks = function () {
+            browser.pause(200);
+        };
+        threeTicks = function () {
+            browser.pause(300);
         };
         emptyDownloadFolder = async function () {
             await fse.emptyDirSync(DOWNLOAD_FOLDER);
@@ -233,27 +259,31 @@ exports.config = {
 
         checkDownloadFile = async function (baseFileName, folder, conditionCheckFileName) {
             var assert = require('assert');
-            pause(5000);
+            if (typeof folder == 'undefined') folder = DOWNLOAD_FOLDER;
+            if (folder === false) folder = DOWNLOAD_FOLDER;
+
             if (typeof conditionCheckFileName == 'undefined') {
                 conditionCheckFileName = function (fileName) {
                     return fileName.indexOf(baseFileName) >= 0;
                 };
             }
+            var tryCount = 5;
 
-            if (typeof folder == 'undefined') folder = DOWNLOAD_FOLDER;
-            if (folder === false) folder = DOWNLOAD_FOLDER;
-
-            var files = await getFilesInFolder(folder);
-            var found = false;
-            for (var i = 0; i < files.length; i++) {
-                if (conditionCheckFileName(files[i])) {
-                    found = true;
-                    break;
+            for (var i = 1; i <= tryCount; i++) {
+                var files = await getFilesInFolder(folder);
+                var found = false;
+                for (var i = 0; i < files.length; i++) {
+                    if (conditionCheckFileName(files[i])) {
+                        found = true;
+                        break;
+                    }
                 }
+                if (found) {
+                    assert.ok(found, `Has download file (${baseFileName})`);
+                    return found;
+                }
+                oneSecond();
             }
-
-            assert.ok(found, `Has download file (${baseFileName})`);
-            return found;
         }
 
         emptyDownloadFolder();
