@@ -63,6 +63,14 @@ CommonFunction = {
 
         return randomString;
     },
+    getRandomInt: function () {
+        //alias
+        return Math.round(Math.random() * 1000000);
+    },
+    getRandomFloat: function () {
+        //alias
+        return Math.random() * 1000000;
+    },
     getDropDownTextByIndex: function ($select, index) {
         if (typeof index == 'undefined') index = 0;
         return $select.$$('option')[index].getText();
@@ -75,7 +83,7 @@ CommonFunction = {
             options.push($$options[i].getText());
         }
 
-        if (typeof value == 'undefined') {
+        if (typeof index == 'undefined' || index === false) {
             //random index
             index = _.random(0,options.length-1);
         }
@@ -84,6 +92,52 @@ CommonFunction = {
         $dropdown.selectByVisibleText(displayValue);
         return displayValue;
     },
+    setDropdownsValues: function ($$dropdowns, indexes) {
+        if (!_.isArray(indexes)) indexes = false;
+        var values = [];
+        for (var i = 0; i < $$dropdowns.length; i++) {
+            if (indexes !== false) {
+                values.push(CommonFunction.setDropdownValue($$dropdowns[i], indexes[i]));
+            } else {
+                values.push(CommonFunction.setDropdownValue($$dropdowns[i], false));
+            }
+        }
+        return values;
+    },
+    setTextForInput: function ($input, value) {
+        if (typeof value == 'undefined') value = false;
+
+        if (value === false) {
+            value = CommonFunction.getRandomString();
+        }
+
+        $input.setValue(value);
+        return value;
+    },
+
+    setHtmlElementBySelector: function (selecttor, outerHtml) {
+        if (typeof outerHtml == 'undefined') outerHtml = false;
+    },
+
+
+    /***
+     * @param year
+     * @param month
+     */
+    getFirstDateOfMonth: function (year, month) {
+        var checkDate = new Date();
+        checkDate.setUTCHours(0,0,0,0);
+        checkDate.setUTCFullYear(year);
+        checkDate.setUTCMonth(month-1);
+        checkDate.setUTCDate(1);
+        return checkDate;
+    },
+    getLastDateOfMonth: function (year, month) {
+        var date = CommonFunction.getFirstDateOfMonth(year,month+1);
+        date.setUTCDate(0);
+        return date;
+    },
+
 }
 
 module.exports = CommonFunction;

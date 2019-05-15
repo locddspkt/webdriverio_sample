@@ -7,8 +7,10 @@ const GLOBALS_CONSTANTS = {
     ROOT_FOLDER: '/Users/locdd/projects/webdriverio_sample' // this folder is use to set download and base download
 };
 
+CommonFunction = require('./common/CommonFunction');
+
 var _ = require('lodash');
-var timeout = process.env.DEBUG ? 9999999 : 120000;
+var timeout = process.env.DEBUG ? 9999999 : 12000000;
 
 exports.config = {
     port: 9515,
@@ -213,6 +215,7 @@ exports.config = {
      * @param {Array.<String>} specs List of spec file paths that are to be run
      */
     before: function (capabilities, specs) {
+        CommonFunction = require('./common/CommonFunction');
         CONSTANTS = GLOBALS_CONSTANTS;
         DOWNLOAD_FOLDER = GLOBALS_CONSTANTS.DOWNLOAD_FOLDER;
 
